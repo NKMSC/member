@@ -1,4 +1,4 @@
-# Django settings for testzzq project.
+# Django settings for member project.
 import os.path 
 import sae.const
 
@@ -6,17 +6,13 @@ from os import environ
 
 debug = not environ.get("APP_NAME", "") 
 if debug:
-
-
-
     MYSQL_DB = 'nkumcs' 
     MYSQL_USER = 'root' 
     MYSQL_PASS = '1' 
     MYSQL_HOST_M = '127.0.0.1' 
     MYSQL_HOST_S = '127.0.0.1' 
     MYSQL_PORT = '3306' 
-else: 
-#SAE 
+else: #SAE 
     import sae.const 
     MYSQL_DB = sae.const.MYSQL_DB 
     MYSQL_USER = sae.const.MYSQL_USER 
@@ -126,16 +122,16 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'testzzq.urls'
+ROOT_URLCONF = 'member.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'testzzq.wsgi.application'
+WSGI_APPLICATION = 'member.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    'testzzq/templates',
+    'member/templates',
 
 )
 
@@ -146,7 +142,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'sql'
+    'database'
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

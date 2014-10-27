@@ -2,7 +2,7 @@
 from django.template.loader import get_template
 from django.http import HttpResponse
 from django.template import Context
-from sql.models import Activity , Code,Log,Section,User,UserTakePartInActivity
+from database.models import Activity , Code,Log,Section,User,UserTakePartInActivity
 from django.core.paginator import Paginator
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage,InvalidPage

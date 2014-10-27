@@ -1,4 +1,4 @@
 import sae
-from testzzq import wsgi
+from member import wsgi
 
 application = sae.create_wsgi_app(wsgi.application)
