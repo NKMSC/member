@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+	<link href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>编辑个人信息</title>
+    <style type="text/css">
+    body{
+    	background-color: #66FF99;
+    	padding-top: 10px;
+    	font-size: 16px;
+    	font-weight: 500;
+    }
+    #table{
+    	font-size: 18px;
+    	font-weight: 200px;
+    }
+    #head{
+    	font-size: 26px;
+    	margin-bottom: 20px;
+    }
+    p{
+    	padding-left: 10px;
+    }
+    a{
+    	text-decoration: none;
+    	color: #000;
+    }
+    a:hover{
+    	text-decoration: none;
+    }
+    .border{
+    	border: 1px solid #8899ff;
+    }
+    </style>
+    <script type="text/javascript">
+    function depart(dep){
+    	window.location="depart?dep="+dep;
+    }
+    </script>
+</head>
+<body class="container">
+<div id="head">
+	<img src="/statics/image/other/logo.png" width="80" height="80">
+	南开大学微软学生俱乐部
+</div>
+<div>
+	<div class="container col-md-2">
+		<img src="/statics/image/userhead/user.png" width="100" height="100">
+		<div>
+			<span id="usernaem"><p><a href="/index/{{user.name}}">{{user.name}}</a></p></span>
+			<span id="dep"><p><a href="/depart/{{user.sec.id}}">{{user.sec.name}}</a></p></span>
+		</div>
+	</div>
+	
+	<div class="col-md-5 col-md-offset-1" id="">
+	<form action="/edit_result/" method="post">
+			<table class="table">
+				<tr>
+					<td>
+						姓名
+					</td>
+					<td>
+						<input type="text" name="username" value="{{user.name}}" readonly="readonly">
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						部门(1:技术部 2:主席团 3:运营部 4:宣传部 请注意：请选填四个数字中的一个)
+					</td>
+					<td>
+						<input type="text" name="sec" value="{{user.sec.id}}" >
+						
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						性别
+					</td>
+					<td>
+						<input type="text" name="sex" value="{{user.sex}}">
+						
+					</td>
+				</tr>
+					<td>
+						学院
+					</td>
+					<td>
+						<input type="text" name="college" value="{{user.college}}">
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						专业
+					</td>
+					<td>
+						<input type="text" name="major" value="{{user.major}}">
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						年级
+					</td>
+					<td>
+						<input type="text" name="grade" value="{{user.grade}}">
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						邮箱
+					</td>
+					<td>						
+					<input type="text" name="email" value="{{user.email}}" readonly="readonly">
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						手机
+					</td>
+					<td>
+						<input type="text" name="phone" value="{{user.phone}}">
+						
+					</td>
+				</tr>
+				
+<tr>
+					<td>
+						QQ
+					</td>
+					<td>
+						<input type="text" name="qq" value="{{user.qq}}">
+						
+					</td>
+				</tr>
+<tr>
+					<td>
+						省/直辖市
+					</td>
+					<td>
+						<input type="text" name="province" value="{{user.province}}">
+						
+					</td>
+				</tr>
+<tr>
+					<td>
+						市/县
+					</td>
+					<td>
+						<input type="text" name="city" value="{{user.city}}">
+						
+					</td>
+				</tr>
+<tr>
+					<td>
+						区/镇
+					</td>
+					<td>
+						<input type="text" name="area" value="{{user.area}}">
+						
+					</td>
+				</tr>
+<tr>
+					<td>
+						校区（例如：本部）
+					</td>
+					<td>
+						<input type="text" name="campus" value="{{user.campus}}">
+						
+					</td>
+				</tr>
+<tr>
+					<td>
+						微信
+					</td>
+					<td>
+						<input type="text" name="wechat" value="{{user.wechat}}">
+						
+					</td>
+				</tr>
+<tr>
+					<td>
+						情感状态
+					</td>
+					<td>
+						<input type="text" name="love" value="{{user.love}}">
+						
+					</td>
+				</tr>
+<tr>
+					<td>
+						宿舍
+					</td>
+					<td>
+						<input type="text" name="dormitory" value="{{user.dormitory}}">
+						
+					</td>
+				</tr>
+					
+				<tr>
+					<td>
+						&nbsp
+					</td>
+					<td>
+						<input type="submit" class="btn btn-default" value="提交">
+						
+					</td>
+				</tr>
+			</table>
+			 
+	</form>
+	</div>
+</div>
+<div>
+	
+</div>
+</body>
+</html>

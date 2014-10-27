@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+	<link href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <title>我的信息</title>
+    <style type="text/css">
+    body{
+    	background-color: #99CCCC;
+    	padding-top: 10px;
+    	font-size: 16px;
+    	font-weight: 500;
+    }
+    #table{
+    	font-size: 18px;
+    	font-weight: 200px;
+    }
+    #head{
+    	font-size: 26px;
+    	margin-bottom: 20px;
+    }
+    p{
+    	padding-left: 10px;
+    }
+    a{
+    	text-decoration: none;
+    	color: #000;
+    }
+    a:hover{
+    	text-decoration: none;
+    }
+    .border{
+    	border: 1px solid #8899ff;
+    }
+    </style>
+    <script type="text/javascript">
+    function goto(dep){
+    	window.location='/depart/'+dep;
+    }
+    </script>
+</head>
+<body class="container">
+<div id="head">
+	<img src="/statics/image/other/logo.png" width="80" height="80">
+	南开大学微软学生俱乐部
+</div>
+<div>
+	<div class="container col-md-2">
+		<img src="/statics/image/userhead/user.png" width="100" height="100">
+		<div>
+			<span id="usernaem"><p><a href="/index/{{user.name}}">{{user.name}}</a></p></span>
+			<span id="dep"><p><a href="/depart/{{user.sec.id}}">{{user.sec.name}}</a></p></span>
+			<span id="edit"><p><a href="/edit">编辑</a></p></span>
+		</div>
+	</div>
+	
+	<div class="col-md-9 col-md-offset-1" id="">
+		<div class="btn-group">
+			<button onclick="goto('all')" class="btn btn-primary">全部</button>
+			<button onclick="goto('pre')" class="btn btn-primary">主席团</button>
+			<button onclick="goto('tech')" class="btn btn-primary">技术部</button>
+			<button onclick="goto('ope')" class="btn btn-primary">运营部</button>
+			<button onclick="goto('adv')" class="btn btn-primary">宣传部</button>
+		</div>
+		<table class="table">
+			<tr>
+				<td>
+					姓名
+				</td>
+				<td>
+					部门
+				</td>
+				<td>
+					年级
+				</td>
+				<td>
+					学院
+				</td>
+				<td>
+					专业
+				</td>
+				<td>
+					手机
+				</td>
+				<td>
+					QQ
+				</td>
+			</tr>
+			{% for item in contacts.object_list %}
+				<tr>
+					<td>
+						<a href="/index/{{item.name}}">{{item.name}}</a>
+					</td>
+					<td>
+						{{item.sec.name}}
+					</td>
+					<td>
+						{{item.grade}}
+					</td>
+					<td>
+						{{item.college}}
+					</td>
+					<td>
+						{{item.major}}
+					</td>
+					<td>
+						{{item.phone}}
+					</td>
+					<td>
+						{{item.qq}}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+
+</div>
+
+
+
+<div class="pagination">
+    <span class="step-links">
+        {% if contacts.has_previous %}
+            <a href="?page={{ contacts.previous_page_number }}" mce_href="?page={{ contacts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ contacts.next_page_number }}" mce_href="?page={{ contacts.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+</body>
+</html>

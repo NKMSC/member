@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <title>注册</title>
+	<link href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<style type="text/css">
+	#title{
+		margin-top: 0;
+		padding: 4% 0;
+		color: #fff;
+		text-align: center;
+		background-color: #00FF99;
+		font-size: 3em;
+	}
+	.form{
+		padding: 0 10%;
+	}
+	a:hover{
+		text-decoration: none;
+	}
+	.border{
+		border:1px solid #456;
+	}
+	</style>
+</head>
+<body>
+
+<div class="" id="">
+	<h1 id="title">欢迎加入微软俱乐部</h1>
+</div>
+<div class="form col-md-6 col-md-offset-1" style="margin-top:70px;" id="mainbody">
+	<form class="form-horizontal" action="/reg_result/" method="post">
+		<div class="form-group">
+			<label class="col-md-2 control-label">邮箱</label>
+			<div class="col-md-10">
+				<input type="email" name="email" class="form-control">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">密码</label>
+			<div class="col-md-10">
+				<input type="text" name="password" class="form-control">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">姓名</label>
+			<div class="col-md-10">
+				<input type="text" name="realname" class="form-control">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">邀请码</label>
+			<div class="col-md-10">
+				<input type="text" name="invitecode" class="form-control">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-10 col-md-offset-2">
+				<input type="submit" value="注册" class="btn btn-primary">
+				<a style="float:right;" href="login">直接登陆</a>
+			</div>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>
