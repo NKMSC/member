@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="zh">
+    <meta charset="UTF-8">
+    <title>发送注册邀请码</title>
+	<link href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<style type="text/css">
+	#title{
+		margin-top: 0;
+		padding: 4% 0;
+		color: #fff;
+		text-align: center;
+		background-color: #00FF99;
+		font-size: 3em;
+	}
+	.form{
+		padding: 0 10%;
+	}
+	a:hover{
+		text-decoration: none;
+	}
+	.border{
+		border:1px solid #456;
+	}
+	</style>
+</head>
+<body>
+
+<div class="" id="">
+	<h1 id="title">欢迎加入微软俱乐部</h1>
+</div>
+<div class="form col-md-6 col-md-offset-1" style="margin-top:70px;" id="mainbody">
+	<form class="form-horizontal" action="/send_code_result" method="post">
+		<div class="form-group">
+			<label class="col-md-2 control-label">邮箱(请一行一个邮箱地址)</label>
+			<div class="col-md-10">
+				<textarea type="text" name="email_list" class="form-control" cols="64" rows="20" style="OVERFLOW-Y:scroll"></textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-10 col-md-offset-2">
+				<input type="submit" value="发送" class="btn btn-primary">
+			</div>
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

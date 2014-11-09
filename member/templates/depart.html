@@ -41,26 +41,21 @@
 </head>
 <body class="container">
 <div id="head">
-	<img src="/statics/image/other/logo.png" width="80" height="80">
+	<img src="http://nkumstc.cn/static/img/mstc.png" width="80" height="80">
 	南开大学微软学生俱乐部
 </div>
 <div>
-	<div class="container col-md-2">
-		<img src="/statics/image/userhead/user.png" width="100" height="100">
-		<div>
-			<span id="usernaem"><p><a href="/index/{{user.name}}">{{user.name}}</a></p></span>
-			<span id="dep"><p><a href="/depart/{{user.sec.id}}">{{user.sec.name}}</a></p></span>
-			<span id="edit"><p><a href="/edit">编辑</a></p></span>
-		</div>
-	</div>
+	
 	
 	<div class="col-md-9 col-md-offset-1" id="">
 		<div class="btn-group">
-			<button onclick="goto('all')" class="btn btn-primary">全部</button>
-			<button onclick="goto('pre')" class="btn btn-primary">主席团</button>
-			<button onclick="goto('tech')" class="btn btn-primary">技术部</button>
-			<button onclick="goto('ope')" class="btn btn-primary">运营部</button>
-			<button onclick="goto('adv')" class="btn btn-primary">宣传部</button>
+			<button onclick="goto('all')" class="btn btn-primary {{isactive1}}">全部</button>
+			<button onclick="goto('pre')" class="btn btn-primary {{isactive2}}">主席团</button>
+			<button onclick="goto('tech')" class="btn btn-primary {{isactive3}}">技术部</button>
+			<button onclick="goto('ope')" class="btn btn-primary {{isactive4}}">运营部</button>
+			<button onclick="goto('adv')" class="btn btn-primary {{isactive5}}">宣传部</button>
+			<button onclick="goto('me')" class="btn btn-primary  {{isactive6}}">我的信息</button>
+			<button onclick="goto('logout')" class="btn btn-danger  {{isactive7}}">注销</button>
 		</div>
 		<table class="table">
 			<tr>
@@ -86,10 +81,10 @@
 					QQ
 				</td>
 			</tr>
-			{% for item in contacts.object_list %}
+			{% for item in contacts %}
 				<tr>
 					<td>
-						<a href="/index/{{item.name}}">{{item.name}}</a>
+						<a href="/index/{{item.id}}">{{item.name}}</a>
 					</td>
 					<td>
 						{{item.sec.name}}
@@ -118,20 +113,6 @@
 
 
 
-<div class="pagination">
-    <span class="step-links">
-        {% if contacts.has_previous %}
-            <a href="?page={{ contacts.previous_page_number }}" mce_href="?page={{ contacts.previous_page_number }}">previous</a>
-        {% endif %}
 
-        <span class="current">
-            Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
-        </span>
-
-        {% if contacts.has_next %}
-            <a href="?page={{ contacts.next_page_number }}" mce_href="?page={{ contacts.next_page_number }}">next</a>
-        {% endif %}
-    </span>
-</div>
 </body>
 </html>

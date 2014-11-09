@@ -41,18 +41,11 @@
 </head>
 <body class="container">
 <div id="head">
-	<img src="/statics/image/other/logo.png" width="80" height="80">
+	<img src="http://nkumstc.cn/static/img/mstc.png" width="80" height="80">
 	南开大学微软学生俱乐部
 </div>
 <div>
-	<div class="container col-md-2">
-		<img src="/statics/image/userhead/user.png" width="100" height="100">
-		<div>
-			<span id="usernaem"><p><a href="/index/{{user.name}}">{{user.name}}</a></p></span>
-			<span id="dep"><p><a href="/depart/{{user.sec.id}}">{{user.sec.name}}</a></p></span>
-			
-		</div>
-	</div>
+	
 	
 	<div class="col-md-9 col-md-offset-1" id="">
 		<div class="btn-group">
@@ -61,6 +54,8 @@
 			<button onclick="depart('tech')" class="btn btn-primary">技术部</button>
 			<button onclick="depart('ope')" class="btn btn-primary">运营部</button>
 			<button onclick="depart(adv)" class="btn btn-primary">宣传部</button>
+			<button onclick="depart('me')" class="btn btn-primary ">我</button>
+			<button onclick="depart('logout')" class="btn btn-danger">注销</button>
 		</div>
 		<table class="table">
 			<tr>

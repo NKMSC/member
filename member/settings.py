@@ -1,8 +1,10 @@
 # Django settings for member project.
 import os.path 
-import sae.const
-
 from os import environ
+
+#Niu added this for static files
+SITE_ROOT=os.path.abspath(os.path.dirname(__file__)) # '1/member'
+
 
 debug = not environ.get("APP_NAME", "") 
 if debug:
@@ -12,6 +14,7 @@ if debug:
     MYSQL_HOST_M = '127.0.0.1' 
     MYSQL_HOST_S = '127.0.0.1' 
     MYSQL_PORT = '3306' 
+    #MYSQL_PORT = '5432' # Niu's setting.
 else: #SAE 
     import sae.const 
     MYSQL_DB = sae.const.MYSQL_DB 
@@ -33,6 +36,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        #'ENGINE': 'django.db.backends.postgresql_psycopg2', # Niu's setting.
         'NAME': MYSQL_DB, 
         'USER': MYSQL_USER, 
         'PASSWORD': MYSQL_PASS, 
@@ -49,11 +53,11 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Shanghai'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-CN'
 
 SITE_ID = 1
 
@@ -66,7 +70,7 @@ USE_I18N = True
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -81,14 +85,18 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(SITE_ROOT,'statics') # '1/member/statics'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+STATIC_URL = '/statics/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+
+    #("css", os.path.join(STATIC_ROOT,'css')),
+    #("admin", os.path.join(STATIC_ROOT,'admin')),
+    #("image", os.path.join(STATIC_ROOT,'image')),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -142,9 +150,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'database'
+    'database',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
