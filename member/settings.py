@@ -10,7 +10,7 @@ debug = not environ.get("APP_NAME", "")
 if debug:
     MYSQL_DB = 'nkumcs' 
     MYSQL_USER = 'root' 
-    MYSQL_PASS = '1' 
+    MYSQL_PASS = '' 
     MYSQL_HOST_M = '127.0.0.1' 
     MYSQL_HOST_S = '127.0.0.1' 
     MYSQL_PORT = '3306' 

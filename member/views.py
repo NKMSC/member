@@ -205,6 +205,22 @@ def depart(request,offset):
             depart=get_template('depart.html')
             departHtml=depart.render(Context({'contacts':userlst,'user':user,'isactive5':isactive}));
             return HttpResponse(departHtml)
+        if offset=='cons' or offset=='6': #顾问
+            userlst=User.objects.filter(sec=6,effective=1)
+            user=request.session.get('user')
+            paginator = Paginator(userlst,5)
+            try:
+                page = int(request.GET.get('page','1'))
+            except ValueError:
+                page = 1
+            try:
+                contacts = paginator.page(page)
+            except (EmptyPage,InvalidPage):
+                contacts = paginator.page(paginator.num_pages)
+            isactive='active'
+            depart=get_template('depart.html')
+            departHtml=depart.render(Context({'contacts':userlst,'user':user,'isactive7':isactive}))
+            return HttpResponse(departHtml)
 	# 查询数百具
 	# 封装对象
 	#departHtml=depart.render(Context());
@@ -213,6 +229,8 @@ def depart(request,offset):
             return HttpResponseRedirect("/index")
         if offset=='logout':
             return HttpResponseRedirect("/logout")
+        if offset=='edit':
+            return HttpResponseRedirect("/edit")
             
 
 @csrf_exempt
@@ -241,6 +259,8 @@ def reg_result(request): # 注册的结果页面
         u.sec=Section.objects.get(id=4)
     if sec==u'财务部':
         u.sec=Section.objects.get(id=5)
+    if sec==u'顾问团':
+        u.sec=Section.objects.get(id=6)
     
     college = request.POST['college']
     major = request.POST['major']
@@ -287,6 +307,7 @@ def reg_result(request): # 注册的结果页面
         if c.effective==0:
             return HttpResponse("该邀请码已经被使用过了！请确认您拥有正确的邀请码！")
         else:
+            u.id=c.id
             u.save()
             c.effective=0
             c.use =User.objects.get(email = email)  # 把验证码和用户关联上
@@ -314,6 +335,7 @@ def login_result(request): # 登陆的结果
        user=User.objects.get(email=email) # user是指从数据库里面查找的邮箱为email的用户
     except User.DoesNotExist:
         return HttpResponse("账户不存在")
+    #if user.password==u.password:
     if user.password==hashlib.sha1(u.password).hexdigest(): # u是登陆之时填写的用户
         if user.effective == 1:
             result=get_template('login_result.html') # 比较数据库的用户的密码和填写的密码是否一致
@@ -357,6 +379,11 @@ def logout(requst):# 注销，从session里面删除user对象，并跳转回登
         return HttpResponse("请先登录！")
     del requst.session['user']
     return HttpResponseRedirect("/login")
+
+#@csrf_exempt
+#def edit(requst): #   进入编辑页面
+#    user=requst.session.get('user')
+#   editHtml 
 
 def getstr(n):#获得指定长度随机字符串
     st = ''
