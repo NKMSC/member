@@ -239,7 +239,7 @@ def reg_result(request): # 注册的结果页面
         u.sec=Section.objects.get(id=3)
     if sec==u'宣传部':
         u.sec=Section.objects.get(id=4)
-    if sec==u'财务部':
+    if sec==u'顾问团':
         u.sec=Section.objects.get(id=5)
     
     college = request.POST['college']
