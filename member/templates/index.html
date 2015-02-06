@@ -6,18 +6,19 @@
     <title>我的信息</title>
     <style type="text/css">
     body{
-    	background-color: #99CCCC;
+    	background-color: #AADDFF;
     	padding-top: 10px;
-    	font-size: 16px;
+    	font-size: 18px;
     	font-weight: 500;
     }
     #table{
     	font-size: 18px;
-    	font-weight: 200px;
+    	font-weight: 300px;
     }
     #head{
-    	font-size: 26px;
-    	margin-bottom: 20px;
+    	font-size: 44px;
+    	margin-bottom: 55px;
+    	font-weight: 700;
     }
     p{
     	padding-left: 10px;
@@ -32,6 +33,90 @@
     .border{
     	border: 1px solid #8899ff;
     }
+
+
+    .table>tbody>tr>td {
+    	border-top:0px;
+    }
+    .table {
+    	margin-top: 50px;
+    }
+    #_logout {
+    	position: relative;
+    	margin-left: 1070px;
+    }
+    
+    #_img {
+    	margin-left: 25px;
+    }
+    #labeltext {
+    	background-color: #ffff88;
+    }
+    .btn_ {
+  	display: inline-block;
+  	margin-bottom: 0;
+  	font-size: 20px;
+  	font-weight: 400;
+  	vertical-align: middle;
+  	cursor: pointer;
+  	-webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  	background-image: none;
+  	border: 1px solid transparent;
+  	border-radius: 4px;
+	}
+	.btn_-first {
+  	text-align: right;
+  	padding-right: 14px;
+  	height: 40px;
+  	width: 120px;
+  	color: #333;
+  	background-color: #cccccc;
+  	border-color: #cccccc;
+	}
+	.btn_-first:hover,
+	.btn_-first:focus,
+	.btn_-first:active,
+	.btn_-first.active,
+	.open > .dropdown-toggle.btn_-first {
+ 	 color: #fff;
+  	background-color: #999;
+  	border-color: #ccc;
+	}
+	.btn_-second {
+ 	 height: 40px;
+  	 width: 120px;
+ 	 font-weight: 700;
+ 	 text-align: right;
+ 	 padding-right: 14px;
+ 	 color: #333;
+  	background-color: #f2f2f2;
+  	border-color: #ccc;
+	}
+	.btn_-third {
+  	text-align: center;
+  	height: 40px;
+ 	width: 80px;
+ 	color: #fff;
+ 	background-color: #ff5555;
+  	border-color: #ff3333;
+	}
+	.btn_-third:hover,
+	.btn_-third:focus,
+	.btn_-third:active,
+	.btn_-third.active,
+	.open > .dropdown-toggle.btn_-third {
+  	color: #fff;
+  	background-color: #ff2222;
+  	border-color: #ff2222;
+	}
+	.col-md-2 {
+		padding-left: 14.52;
+		padding-right: 0px;
+		width: 11.8%;
+	}
     </style>
     <script type="text/javascript">
     function depart(dep){
@@ -40,15 +125,16 @@
     </script>
 </head>
 <body class="container">
-<div id="head">
-	<img src="http://nkumstc.cn/static/img/mstc.png" width="80" height="80">
-	南开大学微软学生俱乐部
-</div>
-<div>
-		
-	
-	<div class="col-md-9 col-md-offset-1" id="">
+	<div>
+		<button onclick="depart('logout')" class="btn_ btn_-third" id="_logout">注销</button>
+	</div>
+	<div id="head">
+		<img id="_img"src="http://nkumstc.cn/static/img/mstc.png" width="100" height="100" style="margin-right: 25px">南开大学微软学生俱乐部
+	</div>            
+
+	<div class="col-md-2" id="firstcol" style="padding-right: 28px margin-top: 100px width="135"">
 		<div class="btn-group">
+<<<<<<< HEAD
 			<button onclick="depart('all')" class="btn btn-primary">全部</button>
 			<button onclick="depart('pre')" class="btn btn-primary">主席团</button>
             <button onclick="depart('cons')" class="btn btn-primary">顾问团</button>
@@ -58,69 +144,97 @@
 			<button onclick="depart('me')" class="btn btn-primary active">我的信息</button>
             <button onclick="depart('edit')" class="btn btn-primary">编辑个人信息</button>
 			<button onclick="depart('logout')" class="btn btn-danger">注销</button>
+=======
+			<button onclick="depart('me')" class="btn_ btn_-second">我的信息</button>
+			<button onclick="depart('all')" class="btn_ btn_-first">全部</button>
+			<button onclick="depart('pre')" class="btn_ btn_-first">主席团</button>
+			<button onclick="depart('cons')" class="btn_ btn_-first">顾问团</button>
+			<button onclick="depart('tech')" class="btn_ btn_-first">技术部</button>
+			<button onclick="depart('ope')" class="btn_ btn_-first">运营部</button>
+			<button onclick="depart('adv')" class="btn_ btn_-first">宣传部</button>
+>>>>>>> origin/master
 		</div>
-		<table class="table">
+	</div>
+	<div id="labeltext" class="col-md-10" style="padding-bottom: 30px">
+		<div class="col-md-3"style="padding-left: 100px">
+			<table class="table" id="infohead">
 			<tr>
 				<td>
-					姓名
-				</td>
+					姓  名
+				</td>		
+			</tr>
+			<tr>
 				<td>
-					{{user.name}}
+					部  门
+				</td>	
+			</tr>
+			<tr>
+				<td>
+					年  级
 				</td>
 			</tr>
 			<tr>
 				<td>
-					部门
-				</td>
-				<td>
-					{{user.sec.name}}
+					学  院
 				</td>
 			</tr>
 			<tr>
 				<td>
-					年级
-				</td>
-				<td>
-					{{user.grade}}
-				</td>
+					专  业
+				</td>	
 			</tr>
 			<tr>
 				<td>
-					学院
-				</td>
-				<td>
-					{{user.college}}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					专业
-				</td>
-				<td>
-					{{user.major}}
-				</td>
-			</tr>
-			<tr>
-				<td>
-					手机
-				</td>
-				<td>
-					{{user.phone}}
+					手  机
 				</td>
 			</tr>
 			<tr>
 				<td>
 					QQ
 				</td>
-				<td>
-					{{user.qq}}
-				</td>
 			</tr>
 		</table>
-	</div>
-</div>
-<div>
-	
+		</div>
+		<div class="col-md-9" id="infotext" style="padding-left: 100px">
+			<table class="table" id="userinfo">
+				<tr>		
+					<td>
+						{{user.name}}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						{{user.sec.name}}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						{{user.grade}}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						{{user.college}}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						{{user.major}}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						{{user.phone}}
+					</td>
+				</tr>
+				<tr>
+					<td>
+						{{user.qq}}
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>	
 </div>
 </body>
 </html>
