@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head lang="zh-CN">
   <meta charset="UTF-8">
@@ -160,10 +160,11 @@
       <button onclick="depart('me')" class="btn_ btn_-first">我的信息</button>
       <button onclick="depart('all')" class="btn_ btn_-second">全部</button>
       <button onclick="depart('pre')" class="btn_ btn_-first">主席团</button>
-          <button onclick="depart('cons')" class="btn_ btn_-first">顾问团</button>
+      <button onclick="depart('cons')" class="btn_ btn_-first">顾问团</button>
       <button onclick="depart('tech')" class="btn_ btn_-first">技术部</button>
       <button onclick="depart('ope')" class="btn_ btn_-first">运营部</button>
       <button onclick="depart('adv')" class="btn_ btn_-first">宣传部</button>
+      <button onclick="depart('edit')" class="btn_ btn_-first">帐号设置</button>
     </div>
   </div>
   <div id="labeltext" class="col-md-10" style="padding-bottom: 80px padding-left: 10px"> 
@@ -196,80 +197,6 @@
     </table>
   </div>
 </div>
-<<<<<<< HEAD
-<div>
-	
-	
-	<div class="col-md-9 col-md-offset-1" id="">
-		<div class="btn-group">
-			<button onclick="goto('all')" class="btn btn-primary {{isactive1}}">全部</button>
-			<button onclick="goto('pre')" class="btn btn-primary {{isactive2}}">主席团</button>
-            <button onclick="goto('cons')" class="btn btn-primary {{isactive7}}">顾问团</button>
-			<button onclick="goto('tech')" class="btn btn-primary {{isactive3}}">技术部</button>
-			<button onclick="goto('ope')" class="btn btn-primary {{isactive4}}">运营部</button>
-			<button onclick="goto('adv')" class="btn btn-primary {{isactive5}}">宣传部</button>
-			<button onclick="goto('me')" class="btn btn-primary  {{isactive6}}">我的信息</button>
-            <button onclick="goto('edit')" class="btn btn-primary">编辑个人信息</button>
-			<button onclick="goto('logout')" class="btn btn-danger  {{isactive7}}">注销</button>
-		</div>
-		<table class="table">
-			<tr>
-				<td>
-					姓名
-				</td>
-				<td>
-					部门
-				</td>
-				<td>
-					年级
-				</td>
-				<td>
-					学院
-				</td>
-				<td>
-					专业
-				</td>
-				<td>
-					手机
-				</td>
-				<td>
-					QQ
-				</td>
-			</tr>
-			{% for item in contacts %}
-				<tr>
-					<td>
-						<a href="/index/{{item.id}}">{{item.name}}</a>
-					</td>
-					<td>
-						{{item.sec.name}}
-					</td>
-					<td>
-						{{item.grade}}
-					</td>
-					<td>
-						{{item.college}}
-					</td>
-					<td>
-						{{item.major}}
-					</td>
-					<td>
-						{{item.phone}}
-					</td>
-					<td>
-						{{item.qq}}
-					</td>
-				</tr>
-			{% endfor %}
-		</table>
-	</div>
-
-</div>
-
-
-
-=======
->>>>>>> origin/master
 
 </body>
 </html>
