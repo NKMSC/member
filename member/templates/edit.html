@@ -43,8 +43,8 @@
     	}
     	
     }
-     function change_code(){
-         window.location="/change_code";
+     function change_password(){
+         window.location="/change_password/";
       }
     </script>
 </head>
@@ -59,7 +59,7 @@
 		<div>
 			<span id="usernaem"><p><a href="/index/{{user.name}}">{{user.name}}</a></p></span>
 			<span id="dep"><p><a href="/depart/{{user.sec.id}}">{{user.sec.name}}</a></p></span>
-            <button onclick="change_code()" class="btn btn-danger" >修改密码</button>
+            <button onclick="change_password()" class="btn btn-danger" >修改密码</button>
 		</div>
 	</div>
 	

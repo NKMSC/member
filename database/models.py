@@ -103,3 +103,27 @@ class UserTakePartInActivity(models.Model):
     class Meta:
         db_table = 'user_take_part_in_activity'
 
+
+class Reg(models.Model):      
+    email = models.CharField(max_length=64L,primary_key=True)
+    mobile = models.CharField(max_length=32L)
+    realname = models.CharField(max_length=16L)
+    student_id = models.IntegerField()
+    name = models.CharField(max_length=32L)
+    gender = models.CharField(max_length=8L)
+    major = models.CharField(max_length=32L)
+    graduateyear = models.CharField(max_length=10L)
+    degree = models.CharField(max_length=32L)
+    award = models.CharField(max_length=32L)
+    final_award = models.CharField(max_length=32L)
+    status = models.CharField(max_length=30L)
+    def __unicode__(self):
+        return self.name
+    def default(self, obj):
+        if isinstance(obj, datetime):
+          return obj.__str__()
+        return json.JSONEncoder.default(self, obj)
+
+    class Meta:
+        db_table = 'reg'
+        managed=False

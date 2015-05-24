@@ -1,0 +1,23 @@
+{% extends "result.html" %}
+
+
+{% block link %}
+<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+{% endblock %}
+
+{% block title %}查询{% endblock %}
+
+{% block content %}
+
+<form action="/query_result/" method="post">
+  <div class="form-group"  >
+    <label for="studentid">学号</label>
+    <input type="text"  class=" form-control" id="studentid" placeholder="输入学号" name='student_id'>
+    <label for="email">邮箱</label>
+    <input type="email"  class=" form-control" id="email" placeholder="输入邮箱" name='email'>
+  </div>
+  
+  <button type="submit" class="  col-md-4 btn btn-default">查询</button>
+</form>
+{% endblock %}
+

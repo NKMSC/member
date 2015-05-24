@@ -1,0 +1,14 @@
+body{
+	background: url("../image/other/background-strong.png");
+}
+
+.regbox{
+
+	border: 10px solid #add;
+	padding: 10px 30px;
+}
+input[type='radio']{
+	width: 16px;
+	height: 16px;
+	margin: 0 3px;
+}

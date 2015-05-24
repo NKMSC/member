@@ -1,19 +1,24 @@
 # -*- coding: utf-8 -*-
 import random
 import hashlib
-import smtplib  
+import smtplib 
+import httplib, urllib 
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
 from django.template.loader import get_template
 from django.http import HttpResponse
 from django.template import Context
-from database.models import Activity , Code,Log,Section,User,UserTakePartInActivity
+from database.models import Activity , Code,Log,Section,User,UserTakePartInActivity, Reg
 from django.core.paginator import Paginator
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage,InvalidPage
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
 from constant_number import * # 引入常量
+import sys
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
+
 
 
 def hello(request):
@@ -38,7 +43,7 @@ def login(request):
         loginHtml=login.render(Context())
         return HttpResponse(loginHtml)
     else:
-        return HttpResponseRedirect("/index")# 跳转到个人主页
+        return HttpResponseRedirect("/index/")# 跳转到个人主页
 
 def index(request):# 显示自己的详细信息
     index=get_template('index.html')
@@ -107,7 +112,7 @@ def edit_result(request):# 编辑页面返回的结果
     user.sec=Section.objects.get(id=sec)
     user.save()# 修改后的对象存入数据库
     request.session['user']=user# 用新的user替换掉之前旧的session里面的user对象
-    return HttpResponseRedirect("/index")# 跳转到个人主页
+    return HttpResponseRedirect("/index/")# 跳转到个人主页
 
 def depart(request,offset):
 	#depart=get_template('depart.html')
@@ -226,11 +231,11 @@ def depart(request,offset):
 	#departHtml=depart.render(Context());
 	#return HttpResponse(departHtml)
 	if offset=='me':
-            return HttpResponseRedirect("/index")
+            return HttpResponseRedirect("/index/")
         if offset=='logout':
-            return HttpResponseRedirect("/logout")
+            return HttpResponseRedirect("/logout/")
         if offset=='edit':
-            return HttpResponseRedirect("/edit")
+            return HttpResponseRedirect("/edit/")
             
 
 @csrf_exempt
@@ -314,7 +319,8 @@ def reg_result(request): # 注册的结果页面
     
     request.session['user']=u # 把user对象放到session里面去
     result=get_template('result.html')
-    resultHtml=result.render(Context())
+    resultHtml=result.render(Context({'result':'You have registered successfully! <a href="/index/">click this to turnback</a>',
+                                    'meta':'http-equiv="refresh" content="2;url=/index/" '},autoescape=False))#防止将'<'、 '/'和'>'自动转义
     return HttpResponse(resultHtml)
 
 @csrf_exempt
@@ -337,13 +343,13 @@ def login_result(request): # 登陆的结果
             result=get_template('login_result.html') # 比较数据库的用户的密码和填写的密码是否一致
             resultHtml=result.render(Context())
             request.session['user']=user
-            return HttpResponseRedirect("/index")
+            return HttpResponseRedirect("/index/")
         else:
             return HttpResponse("您的帐号已被删除或封停,具体情况请联络技术部负责人予以解决!")
     else:
         return HttpResponse("密码错误")
 @csrf_exempt
-def change_code(request):  #修改密码
+def change_password(request):  #修改密码
     user = request.session.get('user')
     if user is None :
         return HttpResponse("请先登陆！")
@@ -352,51 +358,43 @@ def change_code(request):  #修改密码
     return HttpResponse(result_html)
 
 @csrf_exempt
-def change_code_result(request):  #修改密码的结果
+def change_password_result(request):  #修改密码的结果
     u = request.session.get('user')
     old_password = request.POST['old_password']
     old_password = hashlib.sha1(old_password).hexdigest() 
     new_password = request.POST['new_password']
     confirm_password = request.POST['password_confirm']
+    result = get_template('change_password.html')
+
     if u is None :
         return HttpResponse("请先登陆！")
-    result = get_template('change_password.html')
-    bad_result_html = result.render(Context({'return_value_old':False,'return_value_new':False}))
-    if old_password is None:
-        return HttpResponse(bad_result_html)
-        #return HttpResponse('1')  # 被注释掉的是调试哪一个部分出错了，觉得没用可以删掉(-__-)
-    if new_password is None:
-        return HttpResponse(bad_result_html)
-        #return HttpResponse('2')
-    if confirm_password is None:
-        return HttpResponse(bad_result_html)
-        #return HttpResponse('3')
-    if u.password != old_password:
-        if new_password != confirm_password:
-            return HttpResponse(bad_result_html)
-            #return HttpResponse('4')
-        else:
-            bad_result_html = result.render(Context({'return_value_old':False,'return_value_new':True}))
-            return HttpResponse(bad_result_html)
-            #return HttpResponse(u.password)
     if new_password != confirm_password:
         bad_result_html = result.render(Context({'return_value_old':True,'return_value_new':False}))
         return HttpResponse(bad_result_html)
-        #return HttpResponse('6')
+
+    bad_result_html = result.render(Context({'return_value_old':False,'return_value_new':False}))
+    if old_password==False or new_password==False or confirm_password==False:
+        return HttpResponse(bad_result_html)
+    if u.password != old_password:
+        if new_password != confirm_password:
+            return HttpResponse(bad_result_html)
+        else:
+            bad_result_html = result.render(Context({'return_value_old':False,'return_value_new':True}))
+            return HttpResponse(bad_result_html)
     user = User.objects.get(email = u.email)
     user.password = hashlib.sha1(new_password).hexdigest()
     user.save()
     request.session['user'] = user
-    return HttpResponseRedirect("/index")
+    return HttpResponseRedirect("/index/")
 
 @csrf_exempt
-def reset_code_request(request):   #在登陆页面点击找回密码
+def reset_password_request(request):   #在登陆页面点击找回密码
     result = get_template('reset_password.html')
     result_html = result.render(Context({'return_value_email':True}))
     return HttpResponse(result_html)
 
 @csrf_exempt
-def reset_code(request):  #发送重置邮件获取验证码
+def reset_password(request):  #发送重置邮件获取验证码
     email = request.POST['email']
     #email="754884172@qq.com"
     try:
@@ -408,7 +406,7 @@ def reset_code(request):  #发送重置邮件获取验证码
         code = ''
         while True:    # 防止号码重复
             code = getstr(8)
-            try:
+            try:#改用exist函数
                 Code.objects.get(code=code)
             except Code.DoesNotExist:
                 break
@@ -441,13 +439,13 @@ def reset_code(request):  #发送重置邮件获取验证码
         return HttpResponse(bad_result_html)
     
 @csrf_exempt
-def reset_code_change(request): #重设密码
+def reset_password_change(request): #重设密码
     result = get_template('reset_password_2.html')
-    result_html = result.render(Context())
+    result_html = result.render(Context({'return_value_notempty':True,'return_value_notdiff':True,'return_value_wrongstr':True}))
     return HttpResponse(result_html)
 
 @csrf_exempt
-def reset_code_result(request): #返回重设密码的结果
+def reset_password_result(request): #返回重设密码的结果
     password = request.POST['password']
     password_confirm = request.POST['password_confirm']
     code_confirm = request.POST['code']
@@ -473,7 +471,7 @@ def reset_code_result(request): #返回重设密码的结果
         code.effective = 0
         user.save()
         request.session['user'] = user
-        return HttpResponseRedirect("/login")
+        return HttpResponseRedirect("/login/")
     except Code.DoesNotExist: #判定验证码是否存在
         bad_result_html = bad_result.render(Context({'return_value_wrongstr':False}))
         return HttpResponse(bad_result_html)
@@ -509,7 +507,7 @@ def logout(requst):# 注销，从session里面删除user对象，并跳转回登
     if user is None:
         return HttpResponse("请先登录！")
     del requst.session['user']
-    return HttpResponseRedirect("/login")
+    return HttpResponseRedirect("/login/")
 
 def getstr(n):#获得指定长度随机字符串
     st = ''
@@ -595,3 +593,260 @@ def send_code_result(request):
     else:
         return HttpResponse("操作失败!")
  
+def register(request):
+    result = get_template('result.html')
+    result_html = result.render(Context({'result':'活动已结束'}))
+    return HttpResponse(result_html)
+
+def RegisterToMicrosoft(request):# 编程之美注册
+    reload(sys)
+    sys.setdefaultencoding( "utf-8" )
+    passwd=request.POST['password']
+    passwd_repeat=request.POST['passwd_repeat']
+    email=request.POST['email']
+    name=request.POST['name']
+    realname=request.POST['real_name']
+    gender=request.POST['gender']
+    college=request.POST['college']
+    graduateyear=request.POST['graduateyear']
+    major=request.POST['major']
+    mobile=request.POST['mobile']
+    student_id=request.POST['student_id']
+    tsize=request.POST['tsize']
+    degree=request.POST['degree']
+    data={
+        'lang':'chs',
+        'passwd':passwd,
+        'passwd_repeat':passwd_repeat,
+        'email':email,
+        'name':name,
+        'realname':realname,
+        'gender':gender,
+        'college':college,
+        'graduateyear':graduateyear,
+        'major':major,
+        'mobile':mobile,
+        'student_id':student_id,
+        'joinus':"yes",
+        'become_fte':"yes",
+        'join_maillist':"no",
+        'tsize':tsize,
+        'degree':degree
+    }    
+
+    for i in data:
+        if data[i]=="":
+            result=get_template('result.html')
+            resultHtml=result.render(Context({'result':'注册资料没有填写完整，注册失败！<a href="/register">点击返回</a>'},autoescape=False))#防止将'<'、 '/'和'>'自动转义，下同
+            return HttpResponse(resultHtml)           
+    if passwd != passwd_repeat:        
+        result=get_template('result.html')
+        resultHtml=result.render(Context({'result':'注册失败！两次输入密码不一致 <a href="/register">点击返回</a>'},autoescape=False))     
+        return HttpResponse(resultHtml)        
+
+
+    headers = {'Content-type': 'application/x-www-form-urlencoded',
+                'User-Agent': 'Mozilla/5.0',
+                'accept':"*/*"
+                }
+    conn = httplib.HTTPConnection("programming2015.cstnet.cn")
+    params = urllib.urlencode(data)
+    conn.request("POST", "/api/user/register.json", params, headers)#提交
+
+
+
+    response = conn.getresponse()
+    res = response.read()#type of 'res':string  content:{"code":int,"errorMessage":""} or {"response":{"message":"success","url":"\/register\/status"},"code":0}
+
+    index=res.find("code")#在返回的信息中寻找code字符串，找到后在index中加6即为返回的值
+    if index==-1:#code ,可能微软注册页面返回的信息已经更改，需要重写代码
+        result=get_template('result.html')
+        resultHtml=result.render(Context({'result':'出现错误，请联系管理员'}))     
+        return HttpResponse(resultHtml)        
+    index=index+6
+    if res[index]=="0":#注册成功
+        conn.close()
+        user=Reg()
+        user.email=email
+        user.name=name
+        user.realname=realname
+        user.gender=gender
+        user.graduateyear=graduateyear
+        user.major=major
+        user.mobile=mobile
+        user.student_id=student_id
+        user.degree=degree
+        user.status='no'
+
+        #抽奖
+        award0=Reg.objects.get(email=0)#无奖品
+        award1=Reg.objects.get(email=1)#奖品1
+        award2=Reg.objects.get(email=2)#奖品2
+        award3=Reg.objects.get(email=3)#奖品3
+        award4=Reg.objects.get(email=4)#奖品4
+        award5=Reg.objects.get(email=5)#奖品5
+
+
+        award0num=award0.student_id#奖品的数目
+        award1num=award1.student_id
+        award2num=award2.student_id
+        award3num=award3.student_id
+        award4num=award4.student_id
+        award5num=award5.student_id
+        ram=random.randint(0,award4num+award5num+award3num+award2num+award1num+award0num)
+
+        if ram<=award0num:
+            award0.student_id=award0num-1
+            award0.save()
+            user.save()
+            result=get_template('result.html')
+            resultHtml=result.render(Context({'result':'注册成功，很遗憾没有抽中奖品。<br>后续会有第二次抽奖，结果公布在微信公众号nkumstc，<a href="http://programming2015.cstnet.cn/login">点击登陆编程之美</a>',
+                                                'meta':'http-equiv="refresh" content="5;url=http://mp.weixin.qq.com/s?__biz=MzAxNzI0MTcyOQ==&mid=204230207&idx=1&sn=9d220563ca0387631a7bc3b586b0239b#rd" '},autoescape=False))     
+            return HttpResponse(resultHtml)  
+        if ram <=award1num+award0num:           
+            award1.student_id=award1num-1            
+            user.award=award1.name
+            user.save()
+            str=award1.name
+            award1.save()
+            result=get_template('result.html')
+            
+            resultHtml=result.render(Context({'result':'注册成功，恭喜抽中'+str+'  <br>领奖时间于19号微信号公布通知，微信公众号nkumstc <a href="http://programming2015.cstnet.cn/login">点击登陆编程之美</a>',
+                                                 'meta':'http-equiv="refresh" content="5;url=http://mp.weixin.qq.com/s?__biz=MzAxNzI0MTcyOQ==&mid=204230207&idx=1&sn=9d220563ca0387631a7bc3b586b0239b#rd"'},autoescape=False))     
+            return HttpResponse(resultHtml)
+        if ram<=award2num+award1num+award0num:
+            award2.student_id=award2num-1            
+            user.award=award2.name
+            user.save()
+            str=award2.name
+            award2.save()
+            
+            result=get_template('result.html')
+            resultHtml=result.render(Context({'result':'注册成功，恭喜抽中'+str+' <br>领奖时间于19号微信号公布通知，微信公众号nkumstc <a href="http://programming2015.cstnet.cn/login">点击登陆编程之美</a>',
+                                                 'meta':'http-equiv="refresh" content="5;url=http://mp.weixin.qq.com/s?__biz=MzAxNzI0MTcyOQ==&mid=204230207&idx=1&sn=9d220563ca0387631a7bc3b586b0239b#rd"'},autoescape=False))     
+            return HttpResponse(resultHtml)
+        if  ram<=award3num+award2num+award1num+award0num:
+            award3.student_id=award3num-1
+            user.award=award3.name
+            user.save()
+            str=award3.name
+            award3.save()
+            result=get_template('result.html')
+            resultHtml=result.render(Context({'result':'注册成功，恭喜抽中'+str+'  <br>领奖时间于19号微信号公布通知，微信公众号nkumstc <a href="http://programming2015.cstnet.cn/login">点击登陆编程之美</a>',
+                                                 'meta':'http-equiv="refresh" content="5;url=http://mp.weixin.qq.com/s?__biz=MzAxNzI0MTcyOQ==&mid=204230207&idx=1&sn=9d220563ca0387631a7bc3b586b0239b#rd"'},autoescape=False))     
+            return HttpResponse(resultHtml)
+        if  ram<=award4num+award3num+award2num+award1num+award0num:
+            award4.student_id=award4num-1
+            user.award=award4.name
+            user.save()
+            str=award4.name
+            award4.save()
+            result=get_template('result.html')
+            resultHtml=result.render(Context({'result':'注册成功，恭喜抽中'+str+'  <br>领奖时间于19号微信号公布通知，微信公众号nkumstc <a href="http://programming2015.cstnet.cn/login">点击登陆编程之美</a>',
+                                                 'meta':'http-equiv="refresh" content="5;url=http://mp.weixin.qq.com/s?__biz=MzAxNzI0MTcyOQ==&mid=204230207&idx=1&sn=9d220563ca0387631a7bc3b586b0239b#rd"'},autoescape=False))     
+            return HttpResponse(resultHtml)
+        if  ram<=award5num+award4num+award3num+award2num+award1num+award0num:
+            award5.student_id=award5num-1
+            user.award=award5.name
+            user.save()
+            str=award5.name
+            award5.save()
+            result=get_template('result.html')
+            resultHtml=result.render(Context({'result':'注册成功，恭喜抽中'+str+'  <br>领奖时间于19号微信号公布通知，微信公众号nkumstc <a href="http://programming2015.cstnet.cn/login">点击登陆编程之美</a>',
+                                                 'meta':'http-equiv="refresh" content="5;url=http://mp.weixin.qq.com/s?__biz=MzAxNzI0MTcyOQ==&mid=204230207&idx=1&sn=9d220563ca0387631a7bc3b586b0239b#rd"'},autoescape=False))     
+            return HttpResponse(resultHtml)
+
+
+        user.save()
+        result=get_template('result.html')
+        resultHtml=result.render(Context({'result':'注册成功。<a href="http://programming2015.cstnet.cn/login">点击登陆</a>'},autoescape=False))     
+        return HttpResponse(resultHtml)        
+    
+    else:#注册失败
+        conn.close()
+        index_start=res.find("errorMessage");
+        if index_start==-1:#找不到errorMessage ,可能微软注册页面返回的信息已经更改，需要重写代码
+            result=get_template('result.html')
+            resultHtml=result.render(Context({'result':'出现错误，请联系管理员'}))     
+            return HttpResponse(resultHtml)         
+    
+        index_start+=14
+        index_end=res.find("\"",index_start+1)
+        substring=res[index_start+1:index_end]    
+        temp='注册失败！'+substring
+        temp= temp+' <a href="/register">点击返回</a> '
+        result=get_template('result.html')
+        resultHtml=result.render(Context({'result':temp},autoescape=False))     
+        return HttpResponse(resultHtml)
+def rules(request):    
+    result = get_template('rules.html')
+    result_html = result.render(Context())
+    return HttpResponse(result_html)
+def intro(request):    
+    result = get_template('intro.html')
+    result_html = result.render(Context())
+    return HttpResponse(result_html)
+def query(request):    
+    result = get_template('query.html')
+    result_html = result.render(Context())
+    return HttpResponse(result_html)
+def query_result(request):
+   
+
+
+    if request.POST['email'] and  request.POST['student_id']:
+
+        email=request.POST['email']    
+        studentid=request.POST['student_id']
+        try:        
+            user = Reg.objects.get(email = email)
+            if user.student_id==int(studentid):
+                status="已领取"
+                if user.status=='no':
+                    status="未领取"
+                query_result=get_template('query_result.html')
+                query_result_html=query_result.render(Context({'student_id':user.student_id,'email':user.email,'name':user.realname,'award':user.award,'final_award':user.final_award,'status':status}))
+                return HttpResponse(query_result_html)
+            else:
+                bad_result = get_template('result.html')
+                bad_result_html = bad_result.render(Context({'result':'用户不存在 <a href="/query">点击返回</a>'},autoescape=False))
+                return HttpResponse(bad_result_html)
+
+        except Reg.DoesNotExist:
+            bad_result = get_template('result.html')
+            bad_result_html = bad_result.render(Context({'result':'用户不存在 <a href="/query">点击返回</a>'},autoescape=False))
+            return HttpResponse(bad_result_html)
+    else:
+        bad_result = get_template('result.html')
+        bad_result_html = bad_result.render(Context({'result':'输入错误 <a href="/query">点击返回</a>'},autoescape=False))
+        return HttpResponse(bad_result_html)
+def get_award(request):
+    if request.POST['email'] and  request.POST['password']:
+        email=request.POST['email']
+        user = Reg.objects.get(email = email)
+        if request.POST['password']=='nkumstc1234' and user.status=='no':           
+            
+            user.status="yes"
+            user.save()
+            result=get_template('result.html')
+            result_html=result.render(Context({'result':'领取成功',
+                                                'meta':'http-equiv="refresh" content="2;url=/query"'},autoescape=False))
+            return HttpResponse(result_html)
+        else:
+            result=get_template('result.html')
+            result_html=result.render(Context({'result':'领取失败',
+                                                'meta':'http-equiv="refresh" content="2;url=/query"'},autoescape=False))
+            return HttpResponse(result_html)
+    else:
+        result=get_template('result.html')
+        result_html=result.render(Context({'result':'同学别闹了抓紧去学习吧:)'},autoescape=False))
+        return HttpResponse(result_html)
+def change_number(request):
+    user=Reg.objects.get(email = '0')
+    num=user.student_id+20
+    user.student_id=num
+    user.save()  
+    result=get_template('result.html')
+    result_html=result.render(Context({'result':'award0:'+str(num),
+                                                'meta':'http-equiv="refresh" content="1;url=/query"'},autoescape=False))
+    return HttpResponse(result_html)

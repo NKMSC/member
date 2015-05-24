@@ -1,0 +1,147 @@
+<!DOCTYPE html>	
+<html lang='zh-CN'>
+<head>
+	<meta charset='utf-8'>	
+	<meta name="viewport"content="width=300, user-scalable=yes, initial-scale=1.0, maximum-scale=5.0, minimun-scale=1.0">
+	<title>编程之美报名</title>
+	<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<script type="text/javascript" src='http://cdn.bootcss.com/jquery/2.1.3/jquery.min.js'></script>
+	<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../statics/css/main.css">
+	<script type="text/javascript" src="../statics/css/main.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container">
+			<ul class="nav navbar-nav">
+
+				<li>
+					<a href="../intro">大赛介绍</a>
+				</li>
+				<li>
+					<a href="../rules">大赛规则</a>
+				</li>
+				
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				
+			</ul>
+		</div>
+	</nav>
+	<div class="container regbox">
+		<form id="form"class='form' action='/RegisterToMicrosoft' method='post'  onsubmit="return checkInput()">
+			{% csrf_token %}
+			<div class="form-group">
+				<label><span>*</span>电子邮箱(用户登录系统)</label>
+				<input type='text' class='form-control' name='email'>
+			</div>	
+			<div class="form-group">
+				<label><span>*</span>大赛ID(即为参赛所用昵称)</label>
+				<input type='text' class='form-control' name='name'>
+			</div>
+			<div class="form-group">
+				<label><span>*</span>密码</label>
+				<input type='password' class='form-control' id='password' name='password'>
+			</div>
+			<div class="form-group">
+				<label><span>*</span>重复密码</label>
+				<input type='password' class='form-control' id='passwd_repeat' name='passwd_repeat'>
+			</div>
+			<div class="form-group">
+				<label><span>*</span>真实姓名</label>
+				<input type='text' class='form-control' name='real_name'>
+			</div>
+
+			<div class="form-group">
+				<label><span>*</span>性别</label><br>
+					<input type='radio' class='' name='gender' value='male' checked="checked">
+					<label>男</label>
+					<input type='radio' class='' name='gender' value="female">
+					<label>女</label>
+			</div>
+			<div class='form-group'>
+				<label><span>*</span>学校</label></label>
+				<select class='form-control' name="college">
+					{% include 'school.html' %}					
+				</select>
+			</div>
+			<div class='form-group'>
+				<label><span>*</span>毕业年份</label><br>
+				<select class='form-control' name="graduateyear">
+					<option value="2015">2015</option>
+	                <option value="2016">2016</option>
+	                <option value="2017">2017</option>
+	                <option value="2018">2018</option>
+	                <option value="2019">2019</option>
+	                <option value="2020">2020</option>
+	                <option value="2021">2021</option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label><span>*</span>专业</label><br>
+				<select class='form-control' name='major'>
+					<option value='computer'>计算机类</option>
+					<option value='electronic'>电子类</option>
+					<option value='communication'>通信类</option>
+					<option value='automation'>自动化</option>
+					<option value='theory'>数理类</option>
+					<option value='other'>其他</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label><span>*</span>在读学位</label><br>
+					<input type='radio' class='' name='degree' value='undergraduate' checked="checked">
+					<label>本科生</label>
+					<input type='radio' class='' name='degree' value="master">
+					<label>研究生</label>
+					<input type='radio' class='' name='degree' value="phd">
+					<label>博士生</label>
+			</div>
+			<div class="form-group">
+				<label><span>*</span>手机号</label>
+				<input type='text' class='form-control' name='mobile'>
+			</div>
+			<div class="form-group">
+				<label><span>*</span>学号</label>
+				<input type='text' class='form-control' name='student_id'>
+			</div>
+			<!-- <div class="form-group">
+				<label><span>*</span>您是否有意愿申请成为微软实习生？</label><br>
+				<input type='radio' class='' name='joinus' value="yes"  checked="checked"><label>是</label>
+				<input type='radio' class='' name='joinus' value="no"><label>否</label>
+			</div>
+			<div class="form-group">
+				<label><span>*</span>如果你是2016届毕业生，是否有意愿申请成为微软公司的员工？</label><br>
+				<input type='radio' class='' name='become_fte' value="yes"checked="checked"><label>是</label>
+				<input type='radio' class='' name='become_fte' value="no"><label>否</label>
+			</div>
+			<div class="form-group">
+				<label><span>*</span>是否有意愿接收有关微软招聘等信息？</label><br>
+				<input type='radio' class='' name='join_maillist' value="yes"checked="checked"><label>是</label>
+				<input type='radio' class='' name='join_maillist' value="no"><label>否</label>
+			</div> -->
+			<div class="form-group">
+				<label><span>*</span>T恤尺码</label><br>
+				<input type='radio' class='' name='tsize' value="S" checked="checked"><label>S</label>
+				<input type='radio' class='' name='tsize' value="M"><label>M</label>
+				<input type='radio' class='' name='tsize' value="L"><label>L</label>
+				<input type='radio' class='' name='tsize' value="XL"><label>XL</label>
+				<input type='radio' class='' name='tsize' value="XXL"><label>XXL</label>
+				<input type='radio' class='' name='tsize' value="XXXL"><label>XXXL</label>
+
+
+			</div>
+			
+			<div class="form-group">
+				<input type='submit' class='btn btn-default btn-block btn-primary' value='注册'>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			
+		});
+	</script>
+</body>
+</html>

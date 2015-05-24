@@ -1,0 +1,49 @@
+{% extends "result.html" %}
+
+
+{% block link %}
+<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+{% endblock %}
+
+{% block title %}查询结果{% endblock %}
+
+{% block content %}
+
+<table class="table table-hover">
+
+<tr>
+<td>学号：</td>
+<td>{{student_id}}</td>
+</tr>
+
+<tr>
+<td>邮箱：</td>
+<td>{{email}}</td>
+</tr>
+
+<tr>
+<td>姓名：</td>
+<td>{{name}}</td>
+</tr>
+
+<tr>
+<td>奖项1({{status}})：</td>
+<td>{{award}}</td>
+</tr>
+<tr>
+
+<tr>
+<td>最终奖：</td>
+<td>{{final_award}}</td>
+</tr>
+
+</table>
+<form method="post" action="/get_award/" class="form-group col-md-5">
+
+<input type="text" hidden="hidden" name="email"  value ="{{email}}">
+<input class=" form-control " type ="password" name ="password" placeholder="输入密码领取奖品，请不要私自输入以免丢失奖品">
+<button type="submit" class="col-md-4 btn btn-default">领取奖品</button>
+</form>
+<a class="bg-danger" href="/query">点击返回</a>
+{% endblock %}
+

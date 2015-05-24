@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" http-equiv="refresh" content="2;url=/index"> 
+<meta charset="UTF-8" {{meta}}> 
+<meta name="viewport"content="width=300, user-scalable=yes, initial-scale=1.0, maximum-scale=5.0, minimun-scale=1.0">
+<title>{% block title %}{% endblock %}</title>
+{% block link %}{% endblock %}
 </head>
 <body>
 <center>
@@ -10,11 +13,9 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-You have registered successfully!
- 
-<a href="/index">click this to turnback</a>
+{% block content %}{% endblock %}
+
+{{result}}
 </center>
 </body>
 </html>
